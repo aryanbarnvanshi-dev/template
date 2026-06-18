@@ -2,7 +2,7 @@
 // INTEGRATED MULTI-PAGE CONFIGURATION
 // -------------------------------------------------------------------------
 // ⚠️ यहाँ अपनी Google Apps Script का 'Web App URL' पेस्ट करें (जो script.google.com से मिला है)
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyZEqFlK4FQQz9kGv_gwsXPN6f-WK6nukp7uRO0PQT2r82m8zN5h9eUvMCIxwoT1Wju6w/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwN6pxZPdIArP2yNghRSniNMx0uBZ2lygHr9184CgTktSGj_v7sDGO924RfDqa7AHAIXw/exec';
 
 document.addEventListener('DOMContentLoaded', () => {
   // अगर URL कॉन्फ़िगर नहीं है तो फ़ेचिंग रोकें और कंसोल में अलर्ट दें

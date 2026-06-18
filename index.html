@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home | Loading...</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .hindi-text { font-family: 'Hind', sans-serif; }
+    /* Loader Spinner Styling */
+    .loader-container {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: #ffffff;
+      display: flex; justify-content: center; align-items: center;
+      z-index: 9999;
+      transition: opacity 0.4s ease;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+  <div id="global-loader" class="loader-container">
+    <div class="flex flex-col items-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-indigo-600 mb-3"></div>
+      <p class="text-slate-500 text-sm font-medium">Loading Welcome Page...</p>
+    </div>
+  </div>
+
+  <div class="bg-indigo-900 text-white py-2 text-sm overflow-hidden border-b border-indigo-800">
+    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2 w-full">
+        <span class="bg-red-500 text-xs uppercase font-bold px-2 py-0.5 rounded animate-pulse shrink-0">Latest Notice</span>
+        <marquee id="ticker-notice" class="text-slate-200 font-medium cursor-pointer" scrollamount="4">
+          Welcome to our campus. Loading live updates from management desk...
+        </marquee>
+      </div>
+    </div>
+  </div>
+
+  <header class="bg-white shadow-sm sticky top-0 z-40 border-b border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+      <a href="index.html" class="flex items-center space-x-3">
+        <div class="h-11 w-11 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-lg shadow-md" id="school-logo-placeholder">
+          -
+        </div>
+        <div>
+          <h1 id="nav-school-name" class="font-extrabold text-base sm:text-lg text-slate-900 tracking-tight">Loading...</h1>
+          <p id="nav-school-tagline" class="text-[10px] text-indigo-600 font-semibold tracking-wide uppercase" id="nav-tagline-container">Education Excellence</p>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex space-x-8 font-semibold text-sm text-slate-600">
+        <a href="index.html" class="text-indigo-600 hover:text-indigo-700 transition">Home</a>
+        <a href="about.html" class="hover:text-indigo-600 transition">About Us</a>
+        <a href="facilities.html" class="hover:text-indigo-600 transition">Facilities</a>
+        <a href="gallery.html" class="hover:text-indigo-600 transition">Gallery</a>
+        <a href="contact.html" class="hover:text-indigo-600 transition">Contact Us</a>
+      </nav>
+
+      <div class="hidden sm:block">
+        <a href="mailto:" id="header-cta-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-2.5 rounded-lg shadow-sm transition">
+          Contact Now
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="relative bg-slate-900 text-white py-24 sm:py-32 overflow-hidden flex-grow flex items-center">
+    <div class="absolute inset-0 opacity-25 bg-cover bg-center transition-all duration-700" id="hero-bg-img" style="background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1920');"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-transparent"></div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
+      <span class="inline-flex items-center gap-x-1.5 rounded-md bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-400 border border-indigo-500/20 mb-6">
+        Admissions Open 2026-27
+      </span>
+      <h2 id="hero-title" class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white max-w-3xl leading-tight">
+        Building a Brighter Future For Every Student
+      </h2>
+      <p id="hero-tagline" class="mt-4 text-base sm:text-lg text-slate-300 max-w-2xl leading-relaxed">
+        We provide state-of-the-art education, combining academic intelligence with real-world ethical values.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-4 justify-center sm:justify-start">
+        <a href="about.html" class="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-bold shadow-sm hover:bg-indigo-500 transition">Read School Message</a>
+        <a href="contact.html" class="rounded-xl bg-slate-800 border border-slate-700 px-5 py-3 text-sm font-bold hover:bg-slate-700 transition">Get In Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-100">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-2">
+      <div>
+        <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Recent Announcements</h2>
+        <p class="text-slate-500 text-xs mt-1">Live announcements from our bulletin board</p>
+      </div>
+      <a href="about.html" class="text-indigo-600 hover:text-indigo-700 text-xs font-bold flex items-center gap-1">
+        View Admission Process <span>→</span>
+      </a>
+    </div>
+    <div id="notices-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <p class="text-slate-400 text-sm py-2">Loading notice board streaming...</p>
+    </div>
+  </section>
+
+  <footer class="bg-slate-950 text-slate-400 pt-12 pb-6 border-t border-slate-900 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <div>
+        <h3 id="footer-school-name" class="text-white font-extrabold text-base tracking-tight mb-3">School Name</h3>
+        <p class="text-xs leading-relaxed max-w-sm">Empowering students to achieve academic excellence and lifelong success through quality education and discipline.</p>
+      </div>
+      <div>
+        <h3 class="text-white font-bold text-xs uppercase tracking-wider mb-3">Campus Desk</h3>
+        <ul class="space-y-2 text-xs">
+          <li class="flex items-start gap-2"><span>📍</span><span id="footer-address">Address Loading...</span></li>
+          <li class="flex items-center gap-2"><span>📞</span><span id="footer-phones">Phone Loading...</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-white font-bold text-xs uppercase tracking-wider mb-3">System Framework</h3>
+        <div class="p-3 rounded bg-slate-900 border border-slate-800/60 text-[11px] flex justify-between items-center">
+          <span id="footer-email">Email Loading...</span>
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 border-t border-slate-900 text-center text-[10px] text-slate-600">
+      © 2026 School Control Center. Distributed Template Architecture via GitHub Pages.
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

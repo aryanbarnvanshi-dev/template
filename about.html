@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | Loading...</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .hindi-text { font-family: 'Hind', sans-serif; }
+    /* Loader CSS */
+    .loader-container {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: #ffffff;
+      display: flex; justify-content: center; align-items: center;
+      z-index: 9999;
+      transition: opacity 0.4s ease;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+  <!-- GLOBAL LOADER -->
+  <div id="global-loader" class="loader-container">
+    <div class="flex flex-col items-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-indigo-600 mb-3"></div>
+      <p class="text-slate-500 text-sm font-medium">Loading About Profile...</p>
+    </div>
+  </div>
+
+  <!-- TOP TICKER BANNER -->
+  <div class="bg-indigo-900 text-white py-2 text-sm overflow-hidden border-b border-indigo-800">
+    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2 w-full">
+        <span class="bg-red-500 text-xs uppercase font-bold px-2 py-0.5 rounded animate-pulse shrink-0">Latest Notice</span>
+        <marquee id="ticker-notice" class="text-slate-200 font-medium" scrollamount="4">
+          Loading active bulletin stream...
+        </marquee>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN HEADER -->
+  <header class="bg-white shadow-sm sticky top-0 z-40 border-b border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+      <a href="index.html" class="flex items-center space-x-3">
+        <div class="h-11 w-11 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-lg shadow-md" id="school-logo-placeholder">-</div>
+        <div>
+          <h1 id="nav-school-name" class="font-extrabold text-base sm:text-lg text-slate-900 tracking-tight">Loading...</h1>
+          <p id="nav-school-tagline" class="text-[10px] text-indigo-600 font-semibold tracking-wide uppercase">Education Excellence</p>
+        </div>
+      </a>
+      <nav class="hidden md:flex space-x-8 font-semibold text-sm text-slate-600">
+        <a href="index.html" class="hover:text-indigo-600 transition">Home</a>
+        <a href="about.html" class="text-indigo-600 hover:text-indigo-700 transition">About Us</a>
+        <a href="facilities.html" class="hover:text-indigo-600 transition">Facilities</a>
+        <a href="gallery.html" class="hover:text-indigo-600 transition">Gallery</a>
+        <a href="contact.html" class="hover:text-indigo-600 transition">Contact Us</a>
+      </nav>
+      <div class="hidden sm:block">
+        <a href="" id="header-cta-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-2.5 rounded-lg shadow-sm transition">Contact Now</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE HERO TITLE -->
+  <section class="bg-slate-900 text-white py-12 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
+      <h2 class="text-3xl font-extrabold tracking-tight">Management Desk & Protocols</h2>
+      <p class="text-slate-400 text-sm mt-1">Know about our leadership team, vision, and core structural layout values.</p>
+    </div>
+  </section>
+
+  <!-- LEADERSHIP MESSAGES SECTION -->
+  <main class="max-w-7xl w-full mx-auto px-4 py-12 sm:px-6 lg:px-8 space-y-16 flex-grow">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <!-- PRINCIPAL BLOCK -->
+      <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col md:flex-row gap-6 items-start">
+        <img id="principal-img" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400" class="w-32 h-32 rounded-xl object-cover bg-slate-100 border border-slate-200 shadow-sm shrink-0 mx-auto md:mx-0">
+        <div class="space-y-3 flex-grow">
+          <span class="text-[10px] bg-indigo-50 text-indigo-700 font-bold px-2.5 py-1 rounded uppercase tracking-wider">From the Desk of Principal</span>
+          <h3 id="principal-name" class="text-xl font-extrabold text-slate-900">Loading Principal Name...</h3>
+          <p id="principal-message" class="text-slate-600 text-sm leading-relaxed hindi-text whitespace-pre-line">Loading official desk speech structure...</p>
+        </div>
+      </div>
+
+      <!-- DIRECTOR BLOCK -->
+      <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col md:flex-row gap-6 items-start">
+        <img id="director-img" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400" class="w-32 h-32 rounded-xl object-cover bg-slate-100 border border-slate-200 shadow-sm shrink-0 mx-auto md:mx-0">
+        <div class="space-y-3 flex-grow">
+          <span class="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-2.5 py-1 rounded uppercase tracking-wider">From the Desk of Director</span>
+          <h3 id="director-name" class="text-xl font-extrabold text-slate-900">Loading Director Name...</h3>
+          <p id="director-message" class="text-slate-600 text-sm leading-relaxed hindi-text whitespace-pre-line">Loading official administration speech layout...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMISSION RULES BLOCK -->
+    <section class="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-sm">
+      <div class="border-b border-slate-100 pb-4 mb-6">
+        <h3 class="text-xl font-extrabold text-slate-900 tracking-tight">Admission Protocols & Documentation</h3>
+        <p class="text-slate-500 text-xs mt-0.5">Please review the rules below systematically before initiating registrations.</p>
+      </div>
+      <div id="admission-rules" class="text-slate-700 text-sm leading-relaxed whitespace-pre-line bg-slate-50/50 p-5 rounded-xl border border-slate-100 font-medium hindi-text">
+        Loading data framework from Google Sheets...
+      </div>
+    </section>
+
+    <!-- PREMIUM PARENTS REVIEW BOARD (TESTIMONIALS) -->
+    <section class="bg-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-800">
+      <div class="mb-8 border-b border-slate-800 pb-4">
+        <h3 class="text-xl font-extrabold">What Parents Say About Us</h3>
+        <p class="text-slate-400 text-xs mt-0.5">Verified reviews streamed from real student guardians</p>
+      </div>
+      <!-- Testimonial List Grid Wrapper -->
+      <div id="testimonials-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <p class="text-slate-500 text-sm">Synchronizing reviews channel...</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- GLOBAL FOOTER -->
+  <footer class="bg-slate-950 text-slate-400 pt-12 pb-6 border-t border-slate-900 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <div>
+        <h3 id="footer-school-name" class="text-white font-extrabold text-base tracking-tight mb-3">School Name</h3>
+        <p class="text-xs leading-relaxed max-w-sm">Empowering students to achieve academic excellence and lifelong success through quality education and discipline.</p>
+      </div>
+      <div>
+        <h3 class="text-white font-bold text-xs uppercase tracking-wider mb-3">Campus Desk</h3>
+        <ul class="space-y-2 text-xs">
+          <li class="flex items-start gap-2"><span>📍</span><span id="footer-address">Address Loading...</span></li>
+          <li class="flex items-center gap-2"><span>📞</span><span id="footer-phones">Phone Loading...</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-white font-bold text-xs uppercase tracking-wider mb-3">System Framework</h3>
+        <div class="p-3 rounded bg-slate-900 border border-slate-800/60 text-[11px] flex justify-between items-center">
+          <span id="footer-email">Email Loading...</span>
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 border-t border-slate-900 text-center text-[10px] text-slate-600">
+      © 2026 School Control Center. Distributed Template Architecture via GitHub Pages.
+    </div>
+  </footer>
+
+  <!-- MAIN SCRIPT TERMINAL -->
+  <script src="app.js"></script>
+</body>
+</html>

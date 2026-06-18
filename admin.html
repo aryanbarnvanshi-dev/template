@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Control Center - admin.html</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .hindi-note {
+      font-family: 'Hind', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- TOP HEADER BANNER -->
+  <header class="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 text-white shadow-md border-b border-indigo-500/20">
+    <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center space-x-3.5">
+        <div class="bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-500/30">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        </div>
+        <div>
+          <h1 class="text-2xl font-black tracking-tight flex items-center gap-2">
+            School Website Admin Panel 
+            <span class="text-xs bg-indigo-500/30 text-indigo-300 px-2 py-0.5 rounded border border-indigo-400/20 uppercase font-semibold">Live Editor</span>
+          </h1>
+          <p class="text-xs text-indigo-200 mt-0.5 hindi-note">स्कूल की वेबसाइट को यहाँ से आसानी से बदलें और सुरक्षित करें।</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <button onclick="saveAllSettings()" class="bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/35 transition-all flex items-center gap-2 text-sm">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+          Save All School Settings
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- LOADING STATE OVERLAY -->
+  <div id="loading-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex flex-col items-center justify-center transition-all duration-300">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl flex flex-col items-center max-w-sm text-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-indigo-600 mb-4"></div>
+      <h3 class="font-bold text-lg text-slate-900">Connecting to Server</h3>
+      <p class="text-xs text-slate-500 mt-1 hindi-note">कृपया प्रतीक्षा करें, पुराना डेटा लोड किया जा रहा है...</p>
+    </div>
+  </div>
+
+  <!-- MAIN WRAPPER -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      
+      <!-- TAB NAVIGATION MENU -->
+      <aside class="lg:col-span-1">
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 sticky top-8">
+          <h2 class="text-xs font-bold text-slate-400 tracking-wider uppercase mb-4 px-2">Setup Sections</h2>
+          <nav class="space-y-1" aria-label="Sidebar">
+            <!-- Tab Buttons -->
+            <button onclick="switchTab(1)" id="tab-btn-1" class="tab-btn w-full flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-150 bg-indigo-50 text-indigo-700 border-l-4 border-indigo-600">
+              <span class="mr-3">🏛️</span> Identity Setup
+            </button>
+            <button onclick="switchTab(2)" id="tab-btn-2" class="tab-btn w-full flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-150 text-slate-600 hover:bg-slate-100 hover:text-slate-900 border-l-4 border-transparent">
+              <span class="mr-3">🎨</span> Color Themes
+            </button>
+            <button onclick="switchTab(3)" id="tab-btn-3" class="tab-btn w-full flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-150 text-slate-600 hover:bg-slate-100 hover:text-slate-900 border-l-4 border-transparent">
+              <span class="mr-3">🖼️</span> Banner & Highlights
+            </button>
+            <button onclick="switchTab(4)" id="tab-btn-4" class="tab-btn w-full flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-150 text-slate-600 hover:bg-slate-100 hover:text-slate-900 border-l-4 border-transparent">
+              <span class="mr-3">👥</span> Management Profile
+            </button>
+            <button onclick="switchTab(5)" id="tab-btn-5" class="tab-btn w-full flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-150 text-slate-600 hover:bg-slate-100 hover:text-slate-900 border-l-4 border-transparent">
+              <span class="mr-3">📝</span> Admissions Rules
+            </button>
+            <button onclick="switchTab(6)" id="tab-btn-6" class="tab-btn w-full flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-150 text-slate-600 hover:bg-slate-100 hover:text-slate-900 border-l-4 border-transparent">
+              <span class="mr-3">🔔</span> Notices & Facilities
+            </button>
+            <button onclick="switchTab(7)" id="tab-btn-7" class="tab-btn w-full flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-150 text-slate-600 hover:bg-slate-100 hover:text-slate-900 border-l-4 border-transparent">
+              <span class="mr-3">📸</span> Media & Reviews
+            </button>
+          </nav>
+        </div>
+      </aside>
+
+      <!-- TAB SECTIONS CONTAINER -->
+      <section class="lg:col-span-3">
+        <form id="admin-school-form" onsubmit="event.preventDefault();" class="space-y-6">
+          
+          <!-- TAB 1: BASIC SCHOOL IDENTITY -->
+          <div id="tab-content-1" class="tab-panel bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200/80 space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+              <h2 class="text-xl font-bold text-slate-900">Basic School Identity</h2>
+              <p class="text-xs text-slate-500 mt-1 hindi-note">स्कूल का मुख्य नाम, लोगो, कांटेक्ट नंबर और पता यहाँ भरें।</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">School Full Name</label>
+                <input type="text" id="global_school_name" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="e.g. Saraswati Vidya Mandir">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">School Short Name</label>
+                <input type="text" id="global_school_short_name" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="e.g. SVM School">
+              </div>
+
+              <div class="md:col-span-2">
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">School Logo URL</label>
+                <input type="url" id="global_logo_url" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="https://example.com/logo.png">
+                <small class="text-amber-700 font-medium text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: अपनी फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' (जो .jpg, .png या .jpeg पर ख़त्म हो) यहाँ पेस्ट करें।</small>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Phone Number 1</label>
+                <input type="text" id="global_phone_1" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="e.g. +91 9876543210">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Phone Number 2 (Alternate)</label>
+                <input type="text" id="global_phone_2" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="e.g. +91 9876543211">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">School Email Address</label>
+                <input type="email" id="global_email" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="e.g. info@svmschool.com">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Established Year</label>
+                <input type="text" id="global_established_year" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="e.g. 1995">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">School Daily Timings</label>
+                <input type="text" id="global_school_timing" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="e.g. 08:00 AM - 02:00 PM">
+              </div>
+
+              <div class="md:col-span-2">
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">School Full Address</label>
+                <textarea id="global_full_address" rows="2" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none resize-none" placeholder="Complete address..."></textarea>
+              </div>
+
+              <div class="md:col-span-2">
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Footer About Short Text</label>
+                <textarea id="footer_about_short" rows="2" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none resize-none" placeholder="Brief description of school for footer..."></textarea>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Facebook Page Link</label>
+                <input type="url" id="social_facebook" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="https://facebook.com/yourschool">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">WhatsApp Group/Chat Link</label>
+                <input type="url" id="social_whatsapp_group" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="https://chat.whatsapp.com/...">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Admission Registration URL</label>
+                <input type="url" id="link_online_admission" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="https://forms.gle/yourAdmissionForm">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Admission Button CTA Text</label>
+                <input type="text" id="cta_admission_text" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="e.g. Apply Online Admission">
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: THEME COLORS CONTROL -->
+          <div id="tab-content-2" class="tab-panel hidden bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200/80 space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+              <h2 class="text-xl font-bold text-slate-900">Theme Colors Control</h2>
+              <p class="text-xs text-slate-500 mt-1 hindi-note">स्कूल की वेबसाइट का रंग यहाँ से तुरंत बदलें।</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="flex items-center space-x-4 p-4 border border-slate-100 rounded-xl bg-slate-50/50">
+                <input type="color" id="theme_primary_color" class="h-14 w-14 rounded-lg cursor-pointer border-0 bg-transparent">
+                <div>
+                  <label class="block text-sm font-bold text-slate-700">Primary Color</label>
+                  <p class="text-xs text-slate-500">Header/Nav & Highlight Elements</p>
+                </div>
+              </div>
+
+              <div class="flex items-center space-x-4 p-4 border border-slate-100 rounded-xl bg-slate-50/50">
+                <input type="color" id="theme_secondary_color" class="h-14 w-14 rounded-lg cursor-pointer border-0 bg-transparent">
+                <div>
+                  <label class="block text-sm font-bold text-slate-700">Secondary Color</label>
+                  <p class="text-xs text-slate-500">Buttons, Accents & Notices Border</p>
+                </div>
+              </div>
+
+              <div class="flex items-center space-x-4 p-4 border border-slate-100 rounded-xl bg-slate-50/50">
+                <input type="color" id="theme_bg_light_color" class="h-14 w-14 rounded-lg cursor-pointer border-0 bg-transparent">
+                <div>
+                  <label class="block text-sm font-bold text-slate-700">Light Background</label>
+                  <p class="text-xs text-slate-500">Section backgrounds & Soft Containers</p>
+                </div>
+              </div>
+
+              <div class="flex items-center space-x-4 p-4 border border-slate-100 rounded-xl bg-slate-50/50">
+                <input type="color" id="theme_text_dark_color" class="h-14 w-14 rounded-lg cursor-pointer border-0 bg-transparent">
+                <div>
+                  <label class="block text-sm font-bold text-slate-700">Dark Text Color</label>
+                  <p class="text-xs text-slate-500">Global Headings and Core Descriptions</p>
+                </div>
+              </div>
+
+              <div class="flex items-center space-x-4 p-4 border border-slate-100 rounded-xl bg-slate-50/50 md:col-span-2">
+                <input type="color" id="theme_accent_color" class="h-14 w-14 rounded-lg cursor-pointer border-0 bg-transparent">
+                <div>
+                  <label class="block text-sm font-bold text-slate-700">Accent Color</label>
+                  <p class="text-xs text-slate-500">Underlines, decorative borders and attention points</p>
+                </div>
+              </div>
+            </div>
+            <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-4">
+              <p class="text-xs text-indigo-800 leading-relaxed hindi-note">💡 <strong>नोट:</strong> यहाँ चुने गए रंग वेबसाइट के अलग-अलग भागों को नया रूप देंगे। एक बार सुरक्षित करने के बाद अपनी लाइव वेबसाइट को खोल कर देखें।</p>
+            </div>
+          </div>
+
+          <!-- TAB 3: HERO BANNER SLIDER & HIGHLIGHTS -->
+          <div id="tab-content-3" class="tab-panel hidden bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200/80 space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+              <h2 class="text-xl font-bold text-slate-900">Hero Banner Slider & Highlight Cards</h2>
+              <p class="text-xs text-slate-500 mt-1 hindi-note">वेबसाइट के मुख्य स्लाइडर बैनर और उसके नीचे के 3 मुख्य कार्ड्स सेट करें।</p>
+            </div>
+
+            <!-- Banner details -->
+            <div class="space-y-4">
+              <h3 class="text-sm font-bold text-slate-900 tracking-wider uppercase border-b border-slate-100 pb-2">1. Slider Banner Texts & Images</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Hero Main Title</label>
+                  <input type="text" id="hero_title" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="e.g. Quality Education For Better Future">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Hero Subtitle</label>
+                  <input type="text" id="hero_subtitle" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="e.g. Standard English & Hindi Medium Residential School">
+                </div>
+              </div>
+
+              <div class="space-y-4 pt-2">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Slider Banner Background Image 1 (URL)</label>
+                  <input type="url" id="hero_bg_image_1" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="https://example.com/banner1.jpg">
+                  <small class="text-amber-700 font-medium text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: अपनी फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' (जो .jpg, .png या .jpeg पर ख़त्म हो) यहाँ पेस्ट करें।</small>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Slider Banner Background Image 2 (URL)</label>
+                  <input type="url" id="hero_bg_image_2" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="https://example.com/banner2.jpg">
+                  <small class="text-amber-700 font-medium text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: अपनी फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' (जो .jpg, .png या .jpeg पर ख़त्म हो) यहाँ पेस्ट करें।</small>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Slider Banner Background Image 3 (URL)</label>
+                  <input type="url" id="hero_bg_image_3" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="https://example.com/banner3.jpg">
+                  <small class="text-amber-700 font-medium text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: अपनी फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' (जो .jpg, .png या .jpeg पर ख़त्म हो) यहाँ पेस्ट करें।</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Highlights list -->
+            <div class="space-y-4 pt-6">
+              <h3 class="text-sm font-bold text-slate-900 tracking-wider uppercase border-b border-slate-100 pb-2">2. Highlights (3 Main Points Under Hero)</h3>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Highlight 1 -->
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/40 space-y-3">
+                  <span class="text-xs bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-md font-bold uppercase">Card 1</span>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Title</label>
+                    <input type="text" id="highlight_1_title" class="w-full rounded-lg border-slate-200 border bg-white p-2 text-slate-800 text-sm focus:border-indigo-500 transition-all outline-none" placeholder="e.g. Smart Classes">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Description</label>
+                    <textarea id="highlight_1_desc" rows="2" class="w-full rounded-lg border-slate-200 border bg-white p-2 text-slate-800 text-xs focus:border-indigo-500 transition-all outline-none resize-none" placeholder="Brief explanation..."></textarea>
+                  </div>
+                </div>
+
+                <!-- Highlight 2 -->
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/40 space-y-3">
+                  <span class="text-xs bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-md font-bold uppercase">Card 2</span>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Title</label>
+                    <input type="text" id="highlight_2_title" class="w-full rounded-lg border-slate-200 border bg-white p-2 text-slate-800 text-sm focus:border-indigo-500 transition-all outline-none" placeholder="e.g. Safe Transport">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Description</label>
+                    <textarea id="highlight_2_desc" rows="2" class="w-full rounded-lg border-slate-200 border bg-white p-2 text-slate-800 text-xs focus:border-indigo-500 transition-all outline-none resize-none" placeholder="Brief explanation..."></textarea>
+                  </div>
+                </div>
+
+                <!-- Highlight 3 -->
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/40 space-y-3">
+                  <span class="text-xs bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-md font-bold uppercase">Card 3</span>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Title</label>
+                    <input type="text" id="highlight_3_title" class="w-full rounded-lg border-slate-200 border bg-white p-2 text-slate-800 text-sm focus:border-indigo-500 transition-all outline-none" placeholder="e.g. Lush Green Campus">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Description</label>
+                    <textarea id="highlight_3_desc" rows="2" class="w-full rounded-lg border-slate-200 border bg-white p-2 text-slate-800 text-xs focus:border-indigo-500 transition-all outline-none resize-none" placeholder="Brief explanation..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 4: MANAGEMENT PROFILES -->
+          <div id="tab-content-4" class="tab-panel hidden bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200/80 space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+              <h2 class="text-xl font-bold text-slate-900">Management & Leadership Profiles</h2>
+              <p class="text-xs text-slate-500 mt-1 hindi-note">प्राचार्य (Principal) और निदेशक (Director) की प्रोफाइल और स्कूल की सांख्यिकी संख्या यहाँ सेट करें।</p>
+            </div>
+
+            <!-- Stats block -->
+            <div class="bg-indigo-50/50 p-5 rounded-xl border border-indigo-100 space-y-4">
+              <h3 class="text-xs font-bold text-indigo-950 uppercase tracking-wider">Fast Facts (Dashboard Statistics Counters)</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-2">Total Students Strength Count</label>
+                  <input type="text" id="stats_total_students" class="w-full rounded-lg border-slate-200 border bg-white p-3 text-slate-800 text-sm focus:border-indigo-500 transition-all outline-none" placeholder="e.g. 1500+">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-2">Total Teachers / Staff Count</label>
+                  <input type="text" id="stats_total_teachers" class="w-full rounded-lg border-slate-200 border bg-white p-3 text-slate-800 text-sm focus:border-indigo-500 transition-all outline-none" placeholder="e.g. 50+">
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-4">
+              <!-- Principal details -->
+              <div class="p-5 border border-slate-200 rounded-xl space-y-4">
+                <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-md font-bold uppercase tracking-wide">Principal Profile</span>
+                
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-2">Principal Full Name</label>
+                  <input type="text" id="principal_name" class="w-full rounded-lg border-slate-200 border bg-slate-50/50 p-2.5 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white transition-all outline-none" placeholder="Principal Name">
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-2">Principal Photo URL</label>
+                  <input type="url" id="principal_photo_url" class="w-full rounded-lg border-slate-200 border bg-slate-50/50 p-2.5 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white transition-all outline-none" placeholder="https://example.com/principal.jpg">
+                  <small class="text-amber-700 font-medium text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' यहाँ पेस्ट करें।</small>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-2">Principal's Address / Message</label>
+                  <textarea id="principal_message" rows="5" class="w-full rounded-lg border-slate-200 border bg-slate-50/50 p-2.5 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white transition-all outline-none resize-none" placeholder="Principal message text..."></textarea>
+                </div>
+              </div>
+
+              <!-- Director details -->
+              <div class="p-5 border border-slate-200 rounded-xl space-y-4">
+                <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-md font-bold uppercase tracking-wide">Director Profile</span>
+                
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-2">Director Full Name</label>
+                  <input type="text" id="director_name" class="w-full rounded-lg border-slate-200 border bg-slate-50/50 p-2.5 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white transition-all outline-none" placeholder="Director Name">
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-2">Director Photo URL</label>
+                  <input type="url" id="director_photo_url" class="w-full rounded-lg border-slate-200 border bg-slate-50/50 p-2.5 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white transition-all outline-none" placeholder="https://example.com/director.jpg">
+                  <small class="text-amber-700 font-medium text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' यहाँ पेस्ट करें।</small>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-2">Director's Address / Message</label>
+                  <textarea id="director_message" rows="5" class="w-full rounded-lg border-slate-200 border bg-slate-50/50 p-2.5 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white transition-all outline-none resize-none" placeholder="Director message text..."></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 5: ADMISSION PROTOCOLS -->
+          <div id="tab-content-5" class="tab-panel hidden bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200/80 space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+              <h2 class="text-xl font-bold text-slate-900">Admission Rules & Protocols</h2>
+              <p class="text-xs text-slate-500 mt-1 hindi-note">दाखिला प्रक्रिया, नियम और आवश्यक दस्तावेजों की सूची यहाँ व्यवस्थित करें।</p>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Admission Rules & Required Documents</label>
+              <textarea id="admission_rules" rows="12" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-4 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="Write step-by-step rules here..."></textarea>
+              <p class="text-xs text-slate-400 italic mt-1">Hint: You can use bullet points or separate steps by clean paragraphs to present rules on the primary website.</p>
+            </div>
+          </div>
+
+          <!-- TAB 6: DYNAMIC MODULES [NOTICES & FACILITIES] -->
+          <div id="tab-content-6" class="tab-panel hidden bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200/80 space-y-8">
+            
+            <!-- SECTION A: NOTICE BOARD -->
+            <div class="space-y-4">
+              <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <div>
+                  <h2 class="text-xl font-bold text-slate-900">Live School Notice Board</h2>
+                  <p class="text-xs text-slate-500 mt-1 hindi-note">यहाँ से आप नए नोटिस या आवश्यक सूचनाएँ बदल/जोड़ सकते हैं।</p>
+                </div>
+                <button type="button" onclick="addNewNoticeRow()" class="bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold px-4 py-2 rounded-xl text-xs shadow-sm transition-all flex items-center gap-1.5">
+                  <span>➕</span> Add Notice
+                </button>
+              </div>
+
+              <!-- Notices Dynamic List Wrapper -->
+              <div id="notices-list-container" class="space-y-3">
+                <!-- Javascript Injection -->
+              </div>
+            </div>
+
+            <!-- SECTION B: FACILITIES -->
+            <div class="space-y-4 pt-4 border-t border-slate-100">
+              <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <div>
+                  <h2 class="text-xl font-bold text-slate-900">School Facilities</h2>
+                  <p class="text-xs text-slate-500 mt-1 hindi-note">स्कूल की सुविधाएँ जैसे लाइब्रेरी, खेल का मैदान आदि यहाँ सेट करें।</p>
+                </div>
+                <button type="button" onclick="addNewFacilityRow()" class="bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold px-4 py-2 rounded-xl text-xs shadow-sm transition-all flex items-center gap-1.5">
+                  <span>➕</span> Add Facility
+                </button>
+              </div>
+
+              <!-- Facilities Dynamic List Wrapper -->
+              <div id="facilities-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Javascript Injection -->
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 7: PREMIUM DYNAMIC MEDIA [GALLERY & TESTIMONIALS] -->
+          <div id="tab-content-7" class="tab-panel hidden bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200/80 space-y-8">
+            
+            <!-- SECTION A: GALLERY -->
+            <div class="space-y-4">
+              <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <div>
+                  <h2 class="text-xl font-bold text-slate-900">Photo Gallery</h2>
+                  <p class="text-xs text-slate-500 mt-1 hindi-note">स्कूल के कार्यक्रमों और सुंदर दृश्यों की तस्वीरें यहाँ अपडेट करें।</p>
+                </div>
+                <button type="button" onclick="addNewGalleryRow()" class="bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold px-4 py-2 rounded-xl text-xs shadow-sm transition-all flex items-center gap-1.5">
+                  <span>➕</span> Add Image
+                </button>
+              </div>
+
+              <!-- Gallery Dynamic List Wrapper -->
+              <div id="gallery-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Javascript Injection -->
+              </div>
+            </div>
+
+            <!-- SECTION B: TESTIMONIALS -->
+            <div class="space-y-4 pt-4 border-t border-slate-100">
+              <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <div>
+                  <h2 class="text-xl font-bold text-slate-900">Parent Testimonials</h2>
+                  <p class="text-xs text-slate-500 mt-1 hindi-note">अभिभावकों के विचार एवं समीक्षा यहाँ प्रबंधित करें।</p>
+                </div>
+                <button type="button" onclick="addNewTestimonialRow()" class="bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold px-4 py-2 rounded-xl text-xs shadow-sm transition-all flex items-center gap-1.5">
+                  <span>➕</span> Add Review
+                </button>
+              </div>
+
+              <!-- Testimonials Dynamic List Wrapper -->
+              <div id="testimonials-list-container" class="space-y-4">
+                <!-- Javascript Injection -->
+              </div>
+            </div>
+          </div>
+
+          <!-- PERSISTENT SUBMIT FOOTER BAR -->
+          <div class="p-4 bg-slate-900 text-white rounded-2xl flex flex-col sm:flex-row gap-4 items-center justify-between border border-slate-800 shadow-xl">
+            <div class="flex items-center space-x-2.5">
+              <span class="flex h-3.5 w-3.5 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500"></span>
+              </span>
+              <p class="text-sm font-semibold hindi-note">सभी बदलाव को एक साथ सहेजने के लिए बटन दबाएँ।</p>
+            </div>
+            <button onclick="saveAllSettings()" class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-bold px-8 py-4 rounded-xl shadow-lg transition-all text-base flex items-center justify-center gap-2">
+              <svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+              Save All School Settings
+            </button>
+          </div>
+
+        </form>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- CONTROL SCRIPT LOGIC -->
+  <script>
+    // -------------------------------------------------------------------------
+    // INTEGRATED API CONFIGURATION
+    // -------------------------------------------------------------------------
+    // ⚠️ यहाँ अपनी Google Apps Script का 'Web App URL' पेस्ट करें (जो script.google.com से मिला है)
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyO6SEUtejcaAFUlLrdcdOZ-xE258bQdi6McxNFF-riqidaUp6-48EWJTflee4J6yvyiQ/exec';
+    
+    // 🔒 SECRET ADMIN PASSWORD: This must exactly match the SECRET_PASSKEY in your Google Apps Script code.gs
+    const SECRET_PASSKEY = "admin123";
+
+    // Global arrays to store data locally
+    let currentData = {};
+
+    // -------------------------------------------------------------------------
+    // PAGE INITIALIZATION AND TAB NAVIGATION
+    // -------------------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchCurrentSchoolConfig();
+    });
+
+    function switchTab(tabIndex) {
+      // Hide all panels
+      const panels = document.querySelectorAll('.tab-panel');
+      panels.forEach(p => p.classList.add('hidden'));
+      
+      // Deactivate all button styles
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(b => {
+        b.classList.remove('bg-indigo-50', 'text-indigo-700', 'border-indigo-600');
+        b.classList.add('text-slate-600', 'hover:bg-slate-100', 'hover:text-slate-900', 'border-transparent');
+      });
+
+      // Show current tab panel
+      const activePanel = document.getElementById(`tab-content-${tabIndex}`);
+      if (activePanel) activePanel.classList.remove('hidden');
+
+      // Style active button
+      const activeBtn = document.getElementById(`tab-btn-${tabIndex}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-indigo-50', 'text-indigo-700', 'border-indigo-600');
+        activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-100', 'hover:text-slate-900', 'border-transparent');
+      }
+    }
+
+    // Toggle spinner visibility
+    function toggleLoader(show) {
+      const overlay = document.getElementById('loading-overlay');
+      if (show) {
+        overlay.classList.remove('hidden', 'opacity-0');
+        overlay.classList.add('flex', 'opacity-100');
+      } else {
+        overlay.classList.add('opacity-0');
+        setTimeout(() => {
+          overlay.classList.add('hidden');
+          overlay.classList.remove('flex');
+        }, 300);
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // RETRIEVE AND POPULATE FORM FIELDS
+    // -------------------------------------------------------------------------
+    async function fetchCurrentSchoolConfig() {
+      if (!SCRIPT_URL || SCRIPT_URL.trim() === '' || SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+        toggleLoader(false);
+        return;
+      }
+      
+      try {
+        toggleLoader(true);
+        const response = await fetch(SCRIPT_URL);
+        if (!response.ok) throw new Error('HTTP failure response');
+        
+        const rawText = await response.text();
+        const data = JSON.parse(rawText);
+        currentData = data;
+        
+        if (data) {
+          populateStaticSettings(data);
+          populateDynamicSettings(data);
+        }
+      } catch (e) {
+        console.error('Error fetching initial configurations:', e);
+      } finally {
+        toggleLoader(false);
+      }
+    }
+
+    function populateStaticSettings(data) {
+      // Form fields to update directly
+      const textFields = [
+        'global_school_name', 'global_school_short_name', 'global_logo_url', 
+        'global_phone_1', 'global_phone_2', 'global_email', 'global_established_year',
+        'global_school_timing', 'global_full_address', 'footer_about_short',
+        'social_facebook', 'social_whatsapp_group', 'link_online_admission',
+        'cta_admission_text', 'hero_title', 'hero_subtitle', 'hero_bg_image_1',
+        'hero_bg_image_2', 'hero_bg_image_3', 'highlight_1_title', 'highlight_1_desc',
+        'highlight_2_title', 'highlight_2_desc', 'highlight_3_title', 'highlight_3_desc',
+        'stats_total_students', 'stats_total_teachers', 'principal_name',
+        'principal_photo_url', 'principal_message', 'director_name',
+        'director_photo_url', 'director_message', 'admission_rules',
+        'theme_primary_color', 'theme_secondary_color', 'theme_bg_light_color',
+        'theme_text_dark_color', 'theme_accent_color'
+      ];
+
+      textFields.forEach(id => {
+        const input = document.getElementById(id);
+        if (input && data[id] !== undefined) {
+          input.value = data[id];
+        }
+      });
+    }
+
+    function parseArray(val) {
+      if (!val) return [];
+      if (Array.isArray(val)) return val;
+      try {
+        return JSON.parse(val);
+      } catch (e) {
+        console.warn('Cannot parse array column:', e);
+        return [];
+      }
+    }
+
+    function populateDynamicSettings(data) {
+      // Notices Board Setup
+      const notices = parseArray(data.notices);
+      const noticesContainer = document.getElementById('notices-list-container');
+      noticesContainer.innerHTML = '';
+      if (notices.length > 0) {
+        notices.forEach(item => addNewNoticeRow(item.notice_date, item.notice_text));
+      } else {
+        addNewNoticeRow();
+      }
+
+      // Facilities Setup
+      const facilities = parseArray(data.facilities);
+      const facilitiesContainer = document.getElementById('facilities-list-container');
+      facilitiesContainer.innerHTML = '';
+      if (facilities.length > 0) {
+        facilities.forEach(item => addNewFacilityRow(item.facility_name, item.facility_desc, item.facility_icon_url));
+      } else {
+        addNewFacilityRow();
+      }
+
+      // Gallery Setup
+      const gallery = parseArray(data.gallery);
+      const galleryContainer = document.getElementById('gallery-list-container');
+      galleryContainer.innerHTML = '';
+      if (gallery.length > 0) {
+        gallery.forEach(item => addNewGalleryRow(item.gallery_image_url, item.gallery_image_desc));
+      } else {
+        addNewGalleryRow();
+      }
+
+      // Testimonials Setup
+      const testimonials = parseArray(data.testimonials);
+      const testimonialsContainer = document.getElementById('testimonials-list-container');
+      testimonialsContainer.innerHTML = '';
+      if (testimonials.length > 0) {
+        testimonials.forEach(item => addNewTestimonialRow(item.parent_name, item.parent_review));
+      } else {
+        addNewTestimonialRow();
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // DYNAMIC ELEMENT MANAGEMENT (ADD/REMOVE ELEMENTS IN DOM)
+    // -------------------------------------------------------------------------
+
+    // A. Notices board row addition/deletion
+    function addNewNoticeRow(date = '', text = '') {
+      const parent = document.getElementById('notices-list-container');
+      const rowId = 'notice-row-' + Date.now() + Math.floor(Math.random() * 100);
+      
+      const el = document.createElement('div');
+      el.id = rowId;
+      el.className = 'notice-row bg-slate-50 border border-slate-200 p-4 rounded-xl flex flex-col sm:flex-row gap-4 items-end transition-all duration-200';
+      el.innerHTML = `
+        <div class="w-full sm:w-1/4">
+          <label class="block text-xs font-bold text-slate-600 mb-1.5 uppercase">Date / Time</label>
+          <input type="text" class="notice-date-input w-full rounded-lg border-slate-200 border bg-white p-2.5 text-slate-800 text-sm outline-none focus:border-indigo-500" value="${date}" placeholder="e.g. 10 Oct 2023">
+        </div>
+        <div class="flex-grow w-full">
+          <label class="block text-xs font-bold text-slate-600 mb-1.5 uppercase">Notice details text</label>
+          <input type="text" class="notice-text-input w-full rounded-lg border-slate-200 border bg-white p-2.5 text-slate-800 text-sm outline-none focus:border-indigo-500" value="${text}" placeholder="Write important news detail here...">
+        </div>
+        <button type="button" onclick="purgeElement('${rowId}')" class="bg-red-50 text-red-600 hover:bg-red-100 p-2.5 rounded-lg border border-red-200 transition-all font-semibold text-xs flex items-center gap-1 shrink-0 w-full sm:w-auto justify-center">
+          ❌ Delete
+        </button>
+      `;
+      parent.appendChild(el);
+    }
+
+    // B. Facilities row addition/deletion
+    function addNewFacilityRow(name = '', desc = '', iconUrl = '') {
+      const parent = document.getElementById('facilities-list-container');
+      const rowId = 'facility-row-' + Date.now() + Math.floor(Math.random() * 100);
+
+      const el = document.createElement('div');
+      el.id = rowId;
+      el.className = 'facility-row bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-3 transition-all duration-200';
+      el.innerHTML = `
+        <div class="flex justify-between items-center border-b border-slate-200/60 pb-1.5">
+          <span class="text-xs bg-slate-200 text-slate-700 px-2 py-0.5 rounded font-bold uppercase tracking-wide">Facility Row</span>
+          <button type="button" onclick="purgeElement('${rowId}')" class="text-red-500 hover:text-red-700 text-xs font-bold">❌ Delete Row</button>
+        </div>
+        <div class="grid grid-cols-1 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Facility Name</label>
+            <input type="text" class="facility-name-input w-full rounded-lg border-slate-200 border bg-white p-2 text-slate-800 text-sm outline-none focus:border-indigo-500" value="${name}" placeholder="e.g. Science Laboratory">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Facility Description</label>
+            <textarea class="facility-desc-input w-full rounded-lg border-slate-200 border bg-white p-2 text-slate-800 text-xs outline-none focus:border-indigo-500 resize-none" rows="2" placeholder="Describe the facility values...">${desc}</textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Icon Image URL</label>
+            <input type="url" class="facility-icon-url-input w-full rounded-lg border-slate-200 border bg-white p-2 text-slate-800 text-sm outline-none focus:border-indigo-500" value="${iconUrl}" placeholder="https://example.com/facility_icon.png">
+            <small class="text-amber-700 font-medium text-[10px] block mt-1 hindi-note">⚠️ नोट: फोटो को postimages.org या फेसबुक पर अपलोड करें और 'Direct Link' यहाँ पेस्ट करें।</small>
+          </div>
+        </div>
+      `;
+      parent.appendChild(el);
+    }
+
+    // C. Gallery row addition/deletion
+    function addNewGalleryRow(url = '', desc = '') {
+      const parent = document.getElementById('gallery-list-container');
+      const rowId = 'gallery-row-' + Date.now() + Math.floor(Math.random() * 100);
+
+      const el = document.createElement('div');
+      el.id = rowId;
+      el.className = 'gallery-row bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-3 transition-all duration-200';
+      el.innerHTML = `
+        <div class="flex justify-between items-center border-b border-slate-200/60 pb-1.5">
+          <span class="text-xs bg-slate-200 text-slate-700 px-2 py-0.5 rounded font-bold uppercase tracking-wide">Gallery Photo</span>
+          <button type="button" onclick="purgeElement('${rowId}')" class="text-red-500 hover:text-red-700 text-xs font-bold">❌ Delete Image</button>
+        </div>
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Image URL</label>
+            <input type="url" class="gallery-url-input w-full rounded-lg border-slate-200 border bg-white p-2 text-slate-800 text-sm outline-none focus:border-indigo-500" value="${url}" placeholder="https://example.com/gallery_img.jpg">
+            <small class="text-amber-700 font-medium text-[10px] block mt-1 hindi-note">⚠️ नोट: फोटो को postimages.org या फेसबुक पर अपलोड करें और 'Direct Link' यहाँ पेस्ट करें।</small>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Context / Description</label>
+            <input type="text" class="gallery-desc-input w-full rounded-lg border-slate-200 border bg-white p-2 text-slate-800 text-sm outline-none focus:border-indigo-500" value="${desc}" placeholder="e.g. Independence Day Celebration 2023">
+          </div>
+        </div>
+      `;
+      parent.appendChild(el);
+    }
+
+    // D. Testimonials row addition/deletion
+    function addNewTestimonialRow(name = '', review = '') {
+      const parent = document.getElementById('testimonials-list-container');
+      const rowId = 'testimonial-row-' + Date.now() + Math.floor(Math.random() * 100);
+
+      const el = document.createElement('div');
+      el.id = rowId;
+      el.className = 'testimonial-row bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-3 transition-all duration-200';
+      el.innerHTML = `
+        <div class="flex justify-between items-center border-b border-slate-200/60 pb-1.5">
+          <span class="text-xs bg-slate-200 text-slate-700 px-2 py-0.5 rounded font-bold uppercase tracking-wide">Testimonial Review</span>
+          <button type="button" onclick="purgeElement('${rowId}')" class="text-red-500 hover:text-red-700 text-xs font-bold">❌ Delete Review</button>
+        </div>
+        <div class="grid grid-cols-1 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Parent's Name</label>
+            <input type="text" class="testimonial-name-input w-full rounded-lg border-slate-200 border bg-white p-2.5 text-slate-800 text-sm outline-none focus:border-indigo-500" value="${name}" placeholder="e.g. Ramesh Kumar (Father of Class 4 Student)">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Parent's Review / Message</label>
+            <textarea class="testimonial-review-input w-full rounded-lg border-slate-200 border bg-white p-2.5 text-slate-800 text-sm outline-none focus:border-indigo-500 resize-none" rows="3" placeholder="Write feedback details here...">${review}</textarea>
+          </div>
+        </div>
+      `;
+      parent.appendChild(el);
+    }
+
+    // Clear element cleanly from DOM tree
+    function purgeElement(id) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.style.opacity = '0';
+        element.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          element.remove();
+        }, 150);
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // COMPILE AND SEND UNIFIED PAYLOAD DATA
+    // -------------------------------------------------------------------------
+
+    // A. Gather Notices
+    function compileNotices() {
+      const rows = document.querySelectorAll('.notice-row');
+      const data = [];
+      rows.forEach(r => {
+        const date = r.querySelector('.notice-date-input').value.trim();
+        const text = r.querySelector('.notice-text-input').value.trim();
+        if (date || text) {
+          data.push({ notice_date: date, notice_text: text });
+        }
+      });
+      return data;
+    }
+
+    // B. Gather Facilities
+    function compileFacilities() {
+      const rows = document.querySelectorAll('.facility-row');
+      const data = [];
+      rows.forEach(r => {
+        const name = r.querySelector('.facility-name-input').value.trim();
+        const desc = r.querySelector('.facility-desc-input').value.trim();
+        const iconUrl = r.querySelector('.facility-icon-url-input').value.trim();
+        if (name || desc || iconUrl) {
+          data.push({ facility_name: name, facility_desc: desc, facility_icon_url: iconUrl });
+        }
+      });
+      return data;
+    }
+
+    // C. Gather Gallery Photos
+    function compileGallery() {
+      const rows = document.querySelectorAll('.gallery-row');
+      const data = [];
+      rows.forEach(r => {
+        const url = r.querySelector('.gallery-url-input').value.trim();
+        const desc = r.querySelector('.gallery-desc-input').value.trim();
+        if (url || desc) {
+          data.push({ gallery_image_url: url, gallery_image_desc: desc });
+        }
+      });
+      return data;
+    }
+
+    // D. Gather Testimonials
+    function compileTestimonials() {
+      const rows = document.querySelectorAll('.testimonial-row');
+      const data = [];
+      rows.forEach(r => {
+        const name = r.querySelector('.testimonial-name-input').value.trim();
+        const review = r.querySelector('.testimonial-review-input').value.trim();
+        if (name || review) {
+          data.push({ parent_name: name, parent_review: review });
+        }
+      });
+      return data;
+    }
+
+    // CORE SUBMISSION FUNCTION
+    async function saveAllSettings() {
+      if (!SCRIPT_URL || SCRIPT_URL.trim() === '' || SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+        alert('API URL error: You must configure SCRIPT_URL variable in admin.html before saving!');
+        return;
+      }
+
+      // 1. Gather dynamic elements arrays
+      const noticesArray = compileNotices();
+      const facilitiesArray = compileFacilities();
+      const galleryArray = compileGallery();
+      const testimonialsArray = compileTestimonials();
+
+      // 2. Build full payload object map
+      const payload = {
+        secret_key: SECRET_PASSKEY, // 🔒 Used for authentication on the backend
+
+        // Identity Inputs
+        global_school_name: document.getElementById('global_school_name').value.trim(),
+        global_school_short_name: document.getElementById('global_school_short_name').value.trim(),
+        global_logo_url: document.getElementById('global_logo_url').value.trim(),
+        global_phone_1: document.getElementById('global_phone_1').value.trim(),
+        global_phone_2: document.getElementById('global_phone_2').value.trim(),
+        global_email: document.getElementById('global_email').value.trim(),
+        global_established_year: document.getElementById('global_established_year').value.trim(),
+        global_school_timing: document.getElementById('global_school_timing').value.trim(),
+        global_full_address: document.getElementById('global_full_address').value.trim(),
+        footer_about_short: document.getElementById('footer_about_short').value.trim(),
+        social_facebook: document.getElementById('social_facebook').value.trim(),
+        social_whatsapp_group: document.getElementById('social_whatsapp_group').value.trim(),
+        link_online_admission: document.getElementById('link_online_admission').value.trim(),
+        cta_admission_text: document.getElementById('cta_admission_text').value.trim(),
+
+        // Color Inputs
+        theme_primary_color: document.getElementById('theme_primary_color').value,
+        theme_secondary_color: document.getElementById('theme_secondary_color').value,
+        theme_bg_light_color: document.getElementById('theme_bg_light_color').value,
+        theme_text_dark_color: document.getElementById('theme_text_dark_color').value,
+        theme_accent_color: document.getElementById('theme_accent_color').value,
+
+        // Sliders & Highlights
+        hero_title: document.getElementById('hero_title').value.trim(),
+        hero_subtitle: document.getElementById('hero_subtitle').value.trim(),
+        hero_bg_image_1: document.getElementById('hero_bg_image_1').value.trim(),
+        hero_bg_image_2: document.getElementById('hero_bg_image_2').value.trim(),
+        hero_bg_image_3: document.getElementById('hero_bg_image_3').value.trim(),
+        highlight_1_title: document.getElementById('highlight_1_title').value.trim(),
+        highlight_1_desc: document.getElementById('highlight_1_desc').value.trim(),
+        highlight_2_title: document.getElementById('highlight_2_title').value.trim(),
+        highlight_2_desc: document.getElementById('highlight_2_desc').value.trim(),
+        highlight_3_title: document.getElementById('highlight_3_title').value.trim(),
+        highlight_3_desc: document.getElementById('highlight_3_desc').value.trim(),
+
+        // Profile Cards & Statistics
+        stats_total_students: document.getElementById('stats_total_students').value.trim(),
+        stats_total_teachers: document.getElementById('stats_total_teachers').value.trim(),
+        principal_name: document.getElementById('principal_name').value.trim(),
+        principal_photo_url: document.getElementById('principal_photo_url').value.trim(),
+        principal_message: document.getElementById('principal_message').value.trim(),
+        director_name: document.getElementById('director_name').value.trim(),
+        director_photo_url: document.getElementById('director_photo_url').value.trim(),
+        director_message: document.getElementById('director_message').value.trim(),
+
+        // Admission text
+        admission_rules: document.getElementById('admission_rules').value.trim(),
+
+        // Dynamic modules structured as stringified arrays
+        notices: JSON.stringify(noticesArray),
+        facilities: JSON.stringify(facilitiesArray),
+        gallery: JSON.stringify(galleryArray),
+        testimonials: JSON.stringify(testimonialsArray)
+      };
+
+      try {
+        toggleLoader(true);
+        // Using no-cors to bypass strict CORS blocking on redirects from Google Apps Script
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+
+        // With no-cors, the response is opaque, so we assume success if no network error occurred
+        alert('Success: All configurations and content have been saved successfully!');
+        
+      } catch (err) {
+        console.error('Submission failed:', err);
+        alert('Error: Failed to deliver changes to Google Sheets. Verify network access and SCRIPT_URL configuration.');
+      } finally {
+        toggleLoader(false);
+      }
+    }
+  </script>
+
+</body>
+</html>

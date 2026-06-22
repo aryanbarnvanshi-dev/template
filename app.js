@@ -1,7 +1,6 @@
 // -------------------------------------------------------------------------
 // INTEGRATED MULTI-PAGE CONFIGURATION
 // -------------------------------------------------------------------------
-// ⚠️ यहाँ अपनी Google Apps Script का 'Web App URL' पेस्ट करें (जो script.google.com से मिला है)
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwN6pxZPdIArP2yNghRSniNMx0uBZ2lygHr9184CgTktSGj_v7sDGO924RfDqa7AHAIXw/exec';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -16,6 +15,29 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchAndPopulatePageData();
 });
 
+function fetchJSONP(url) {
+  return new Promise((resolve, reject) => {
+    const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
+    window[callbackName] = function(data) {
+      delete window[callbackName];
+      const scriptEl = document.getElementById(callbackName);
+      if (scriptEl) scriptEl.remove();
+      resolve(data);
+    };
+    
+    const script = document.createElement('script');
+    script.id = callbackName;
+    script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callbackName;
+    script.onerror = function() {
+      delete window[callbackName];
+      const scriptEl = document.getElementById(callbackName);
+      if (scriptEl) scriptEl.remove();
+      reject(new Error('JSONP request failed'));
+    };
+    document.body.appendChild(script);
+  });
+}
+
 /**
  * मुख्य फ़ंक्शन जो डिटेक्ट करेगा कि यूजर किस पेज पर है और गूगल शीट से डेटा लोड करेगा।
  */
@@ -26,10 +48,14 @@ async function fetchAndPopulatePageData() {
 
   try {
     // गूगल शीट से डेटा फ़ेच करना
-    const response = await fetch(SCRIPT_URL, { method: 'GET' });
-    if (!response.ok) throw new Error('Failed to connect with live server stream.');
-    
-    const data = await response.json();
+    let data;
+    if (window.location.protocol === 'file:') {
+      data = await fetchJSONP(SCRIPT_URL);
+    } else {
+      const response = await fetch(SCRIPT_URL);
+      if (!response.ok) throw new Error('Failed to connect with live server stream.');
+      data = await response.json();
+    }
     console.log("Live Sheet Data Received:", data);
 
     // 0. Apply Dynamic Theme Colors
@@ -134,10 +160,8 @@ async function fetchAndPopulatePageData() {
       if (document.getElementById('contact-page-phones')) document.getElementById('contact-page-phones').innerText = phones || '';
       if (document.getElementById('contact-page-email')) document.getElementById('contact-page-email').innerText = data['global_email'] || '';
     }
-
   } catch (error) {
     console.error("Error patching live stream data:", error);
-    alert("System Notice: Failed to retrieve data stream. Please verify SCRIPT_URL configuration inside app.js.");
   } finally {
     // लोडर को हटाना
     if (loader) {
@@ -211,7 +235,7 @@ function renderGalleryBlock(rawJSON) {
       el.className = "group relative overflow-hidden rounded-xl bg-slate-100 aspect-[4/3] border border-slate-200/40 cursor-pointer";
       el.onclick = () => { if(typeof openLightbox === 'function') openLightbox(item.gallery_image_url, item.gallery_image_desc) };
       el.innerHTML = `
-        <img src="${item.gallery_image_url}" class="h-full w-full object-cover group-hover:scale-105 transition duration-300">
+        <img src="${item.gallery_image_url}" alt="${item.gallery_image_desc || 'Campus Gallery Image'}" class="h-full w-full object-cover group-hover:scale-105 transition duration-300">
         ${item.gallery_image_desc ? `<div class="absolute inset-0 bg-black/50 flex items-end p-3 opacity-0 group-hover:opacity-100 transition"><p class="text-white text-xs truncate w-full">${item.gallery_image_desc}</p></div>` : ''}
       `;
       container.appendChild(el);
@@ -285,6 +309,7 @@ function applyThemeColors(data) {
   const textDark = data['theme_text_dark_color'];
   
   if (!primary && !secondary && !bgLight && !textDark) return;
+  if (primary === '#000000' && secondary === '#000000' && bgLight === '#000000' && textDark === '#000000') return;
 
   const style = document.createElement('style');
   let cssStr = `:root {\n`;

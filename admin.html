@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>School Control Center - admin.html</title>
+  <meta name="description" content="School Website Control Center. Manage school basic identity, theme colors, slider banners, leadership profiles, notice board, and parent reviews.">
+  <meta name="robots" content="noindex, nofollow">
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts -->
@@ -59,7 +61,7 @@
       <!-- TAB NAVIGATION MENU -->
       <aside class="lg:col-span-1">
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 sticky top-8">
-          <h2 class="text-xs font-bold text-slate-400 tracking-wider uppercase mb-4 px-2">Setup Sections</h2>
+          <h2 class="text-xs font-bold text-slate-600 tracking-wider uppercase mb-4 px-2">Setup Sections</h2>
           <nav class="space-y-1" aria-label="Sidebar">
             <!-- Tab Buttons -->
             <button onclick="switchTab(1)" id="tab-btn-1" class="tab-btn w-full flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-150 bg-indigo-50 text-indigo-700 border-l-4 border-indigo-600">
@@ -112,7 +114,7 @@
               <div class="md:col-span-2">
                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">School Logo URL</label>
                 <input type="url" id="global_logo_url" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="https://example.com/logo.png">
-                <small class="text-amber-700 font-medium text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: अपनी फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' (जो .jpg, .png या .jpeg पर ख़त्म हो) यहाँ पेस्ट करें।</small>
+                <small class="text-amber-800 font-bold text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: अपनी फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' (जो .jpg, .png या .jpeg पर ख़त्म हो) यहाँ पेस्ट करें।</small>
               </div>
 
               <div>
@@ -250,17 +252,17 @@
                 <div>
                   <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Slider Banner Background Image 1 (URL)</label>
                   <input type="url" id="hero_bg_image_1" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="https://example.com/banner1.jpg">
-                  <small class="text-amber-700 font-medium text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: अपनी फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' (जो .jpg, .png या .jpeg पर ख़त्म हो) यहाँ पेस्ट करें।</small>
+                  <small class="text-amber-800 font-bold text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: अपनी फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' (जो .jpg, .png या .jpeg पर ख़त्म हो) यहाँ पेस्ट करें।</small>
                 </div>
                 <div>
                   <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Slider Banner Background Image 2 (URL)</label>
                   <input type="url" id="hero_bg_image_2" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="https://example.com/banner2.jpg">
-                  <small class="text-amber-700 font-medium text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: अपनी फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' (जो .jpg, .png या .jpeg पर ख़त्म हो) यहाँ पेस्ट करें।</small>
+                  <small class="text-amber-800 font-bold text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: अपनी फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' (जो .jpg, .png या .jpeg पर ख़त्म हो) यहाँ पेस्ट करें।</small>
                 </div>
                 <div>
                   <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Slider Banner Background Image 3 (URL)</label>
                   <input type="url" id="hero_bg_image_3" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-3 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="https://example.com/banner3.jpg">
-                  <small class="text-amber-700 font-medium text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: अपनी फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' (जो .jpg, .png या .jpeg पर ख़त्म हो) यहाँ पेस्ट करें।</small>
+                  <small class="text-amber-800 font-bold text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: अपनी फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' (जो .jpg, .png या .jpeg पर ख़त्म हो) यहाँ पेस्ट करें।</small>
                 </div>
               </div>
             </div>
@@ -346,7 +348,7 @@
                 <div>
                   <label class="block text-xs font-bold text-slate-700 mb-2">Principal Photo URL</label>
                   <input type="url" id="principal_photo_url" class="w-full rounded-lg border-slate-200 border bg-slate-50/50 p-2.5 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white transition-all outline-none" placeholder="https://example.com/principal.jpg">
-                  <small class="text-amber-700 font-medium text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' यहाँ पेस्ट करें।</small>
+                  <small class="text-amber-800 font-bold text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' यहाँ पेस्ट करें।</small>
                 </div>
 
                 <div>
@@ -367,7 +369,7 @@
                 <div>
                   <label class="block text-xs font-bold text-slate-700 mb-2">Director Photo URL</label>
                   <input type="url" id="director_photo_url" class="w-full rounded-lg border-slate-200 border bg-slate-50/50 p-2.5 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white transition-all outline-none" placeholder="https://example.com/director.jpg">
-                  <small class="text-amber-700 font-medium text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' यहाँ पेस्ट करें।</small>
+                  <small class="text-amber-800 font-bold text-xs block mt-1.5 hindi-note bg-amber-50 border border-amber-200/60 rounded-lg p-2">⚠️ नोट: फोटो को postimages.org या फेसबुक पर अपलोड करें और वहाँ से मिला 'Direct Link' यहाँ पेस्ट करें।</small>
                 </div>
 
                 <div>
@@ -388,7 +390,7 @@
             <div class="space-y-2">
               <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Admission Rules & Required Documents</label>
               <textarea id="admission_rules" rows="12" class="w-full rounded-xl border-slate-200 border bg-slate-50/50 p-4 text-slate-800 text-sm focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500 transition-all outline-none" placeholder="Write step-by-step rules here..."></textarea>
-              <p class="text-xs text-slate-400 italic mt-1">Hint: You can use bullet points or separate steps by clean paragraphs to present rules on the primary website.</p>
+              <p class="text-xs text-slate-600 font-medium italic mt-1">Hint: You can use bullet points or separate steps by clean paragraphs to present rules on the primary website.</p>
             </div>
           </div>
 
@@ -507,6 +509,29 @@
     // Global arrays to store data locally
     let currentData = {};
 
+    function fetchJSONP(url) {
+      return new Promise((resolve, reject) => {
+        const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
+        window[callbackName] = function(data) {
+          delete window[callbackName];
+          const scriptEl = document.getElementById(callbackName);
+          if (scriptEl) scriptEl.remove();
+          resolve(data);
+        };
+        
+        const script = document.createElement('script');
+        script.id = callbackName;
+        script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callbackName;
+        script.onerror = function() {
+          delete window[callbackName];
+          const scriptEl = document.getElementById(callbackName);
+          if (scriptEl) scriptEl.remove();
+          reject(new Error('JSONP request failed'));
+        };
+        document.body.appendChild(script);
+      });
+    }
+
     // -------------------------------------------------------------------------
     // PAGE INITIALIZATION AND TAB NAVIGATION
     // -------------------------------------------------------------------------
@@ -564,11 +589,15 @@
       
       try {
         toggleLoader(true);
-        const response = await fetch(SCRIPT_URL);
-        if (!response.ok) throw new Error('HTTP failure response');
-        
-        const rawText = await response.text();
-        const data = JSON.parse(rawText);
+        let data;
+        if (window.location.protocol === 'file:') {
+          data = await fetchJSONP(SCRIPT_URL);
+        } else {
+          const response = await fetch(SCRIPT_URL);
+          if (!response.ok) throw new Error('HTTP failure response');
+          const rawText = await response.text();
+          data = JSON.parse(rawText);
+        }
         currentData = data;
         
         if (data) {

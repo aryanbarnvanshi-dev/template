@@ -61,11 +61,49 @@
         <a href="contact.html" class="hover:text-indigo-600 transition">Contact Us</a>
       </nav>
 
-      <div class="hidden sm:block">
-        <a href="" id="header-cta-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-2.5 rounded-lg shadow-sm transition">Contact Now</a>
+      <div class="flex items-center gap-3">
+        <a href="" id="header-cta-btn" class="hidden sm:inline-flex bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-2.5 rounded-lg shadow-sm transition">Contact Now</a>
+        <!-- Mobile Hamburger Button -->
+        <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 transition" aria-label="Open Navigation Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
       </div>
     </div>
   </header>
+
+  <!-- Mobile Navigation Overlay -->
+  <div id="mobile-nav-overlay" class="fixed inset-0 z-50 bg-black/50 hidden opacity-0 transition-opacity duration-300 md:hidden">
+    <div id="mobile-nav-drawer" class="absolute top-0 left-0 right-0 bg-white shadow-2xl -translate-y-full transition-transform duration-300 ease-out">
+      <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="h-9 w-9 bg-indigo-600 text-white rounded-lg flex items-center justify-center font-bold text-base shadow-sm" id="mobile-logo-box">R</div>
+          <div>
+            <p class="font-extrabold text-sm text-slate-900 leading-tight" id="mobile-school-name-drawer">School Name</p>
+            <p class="text-[10px] text-indigo-600 font-semibold uppercase tracking-wide">Navigation Menu</p>
+          </div>
+        </div>
+        <button id="mobile-menu-close" class="w-9 h-9 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-slate-200 transition" aria-label="Close Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <nav class="flex flex-col px-4 py-3">
+        <a href="index.html" class="flex items-center gap-3 px-3 py-3.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition mb-1">🏠 Home</a>
+        <a href="about.html" class="flex items-center gap-3 px-3 py-3.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition mb-1">🏫 About Us</a>
+        <a href="facilities.html" class="flex items-center gap-3 px-3 py-3.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition mb-1">⚙️ Facilities</a>
+        <a href="gallery.html" class="flex items-center gap-3 px-3 py-3.5 rounded-xl text-sm font-bold text-indigo-600 bg-indigo-50 mb-1">🖼️ Gallery</a>
+        <a href="contact.html" class="flex items-center gap-3 px-3 py-3.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition mb-1">📞 Contact Us</a>
+      </nav>
+      <div class="px-4 pb-5 pt-2">
+        <a href="" id="mobile-cta-btn" class="flex items-center justify-center gap-2 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-3 rounded-xl shadow-md transition">
+          📧 Contact School
+        </a>
+      </div>
+    </div>
+  </div>
 
   <section class="bg-slate-900 text-white py-12 border-b border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">

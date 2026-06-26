@@ -4,6 +4,9 @@
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwN6pxZPdIArP2yNghRSniNMx0uBZ2lygHr9184CgTktSGj_v7sDGO924RfDqa7AHAIXw/exec';
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Mobile menu initialize karna (har page par)
+  initMobileMenu();
+
   // अगर URL कॉन्फ़िगर नहीं है तो फ़ेचिंग रोकें और कंसोल में अलर्ट दें
   if (!SCRIPT_URL || SCRIPT_URL.trim() === '' || SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
     console.warn("SCRIPT_URL is not configured yet. Live streaming is paused.");
@@ -62,35 +65,59 @@ async function fetchAndPopulatePageData() {
     applyThemeColors(data);
 
     // -------------------------------------------------------------------------
+    // KEY NORMALIZER: Google Apps Script snake_case → camelCase convert karta hai
+    // Yeh helper dono formats try karta hai taaki koi data miss na ho
+    // e.g. d('global_school_name') tries data['global_school_name'] AND data['globalSchoolName']
+    // -------------------------------------------------------------------------
+    function d(snakeKey) {
+      if (data[snakeKey] !== undefined && data[snakeKey] !== '') return data[snakeKey];
+      // Convert snake_case → camelCase
+      const camel = snakeKey.replace(/_([a-z])/g, (_, c) => c.toUpperCase());
+      return data[camel];
+    }
+
+    // -------------------------------------------------------------------------
     // 1. हर पेज पर दिखने वाला कॉमन डेटा (Navbar & Footer)
     // -------------------------------------------------------------------------
-    const schoolName = data['global_school_name'] || 'R K MISSION PUBLIC SCHOOL';
-    const schoolTagline = data['global_school_tagline'] || 'Education for Excellence';
+    const schoolName = d('global_school_name') || 'R K MISSION PUBLIC SCHOOL';
+    const schoolTagline = d('global_school_tagline') || 'Education for Excellence';
     
     // Navbar और Footer एलिमेंट्स को अपडेट करना
     if (document.getElementById('nav-school-name')) document.getElementById('nav-school-name').innerText = schoolName;
     if (document.getElementById('footer-school-name')) document.getElementById('footer-school-name').innerText = schoolName;
     if (document.getElementById('nav-school-tagline')) document.getElementById('nav-school-tagline').innerText = schoolTagline;
     
+    // Mobile Drawer में भी school name अपडेट करना
+    if (document.getElementById('mobile-school-name-drawer')) document.getElementById('mobile-school-name-drawer').innerText = schoolName;
+    
     // लोगो का पहला अक्षर सेट करना
     const logoBox = document.getElementById('school-logo-placeholder');
     if (logoBox && schoolName) {
       logoBox.innerText = schoolName.trim().charAt(0).toUpperCase();
     }
+    // Mobile Drawer logo
+    const mobileLogoBox = document.getElementById('mobile-logo-box');
+    if (mobileLogoBox && schoolName) {
+      mobileLogoBox.innerText = schoolName.trim().charAt(0).toUpperCase();
+    }
 
     // कॉन्टैक्ट डिटेल्स (Footer)
-    const phones = [data['global_phone_1'], data['global_phone_2']].filter(Boolean).join(', ');
+    const phones = [d('global_phone_1'), d('global_phone_2')].filter(Boolean).join(', ');
     if (document.getElementById('footer-phones')) document.getElementById('footer-phones').innerText = phones || 'Not Provided';
-    if (document.getElementById('footer-address')) document.getElementById('footer-address').innerText = data['global_address'] || 'Campus Address';
-    if (document.getElementById('footer-email')) document.getElementById('footer-email').innerText = data['global_email'] || 'info@school.com';
+    if (document.getElementById('footer-address')) document.getElementById('footer-address').innerText = d('global_full_address') || d('global_address') || 'Campus Address';
+    if (document.getElementById('footer-email')) document.getElementById('footer-email').innerText = d('global_email') || 'info@school.com';
     
-    if (data['global_email'] && document.getElementById('header-cta-btn')) {
-      document.getElementById('header-cta-btn').href = `mailto:${data['global_email']}`;
+    const emailVal = d('global_email');
+    if (emailVal && document.getElementById('header-cta-btn')) {
+      document.getElementById('header-cta-btn').href = `mailto:${emailVal}`;
+    }
+    if (emailVal && document.getElementById('mobile-cta-btn')) {
+      document.getElementById('mobile-cta-btn').href = `mailto:${emailVal}`;
     }
 
     // टॉप स्क्रॉलिंग नोटिस (Ticker)
     if (document.getElementById('ticker-notice')) {
-      document.getElementById('ticker-notice').innerText = data['global_ticker_notice'] || 'Welcome to our digital campus.';
+      document.getElementById('ticker-notice').innerText = d('global_ticker_notice') || d('noticeTicker') || 'Welcome to our digital campus.';
     }
 
     // -------------------------------------------------------------------------
@@ -101,64 +128,64 @@ async function fetchAndPopulatePageData() {
     if (currentPage === "index.html" || currentPage === "") {
       document.title = `${schoolName} | Home`;
       
-      if (data['hero_title']) document.getElementById('hero-title').innerText = data['hero_title'];
-      if (data['hero_subtitle']) document.getElementById('hero-tagline').innerText = data['hero_subtitle'];
+      if (d('hero_title')) document.getElementById('hero-title').innerText = d('hero_title');
+      if (d('hero_subtitle')) document.getElementById('hero-tagline').innerText = d('hero_subtitle');
       
       // Hero Background Slider Logic
       initHeroSlider(data);
       
       // Highlights mapping
-      if (document.getElementById('highlight_1_title') && data['highlight_1_title']) document.getElementById('highlight_1_title').innerText = data['highlight_1_title'];
-      if (document.getElementById('highlight_1_desc') && data['highlight_1_desc']) document.getElementById('highlight_1_desc').innerText = data['highlight_1_desc'];
-      if (document.getElementById('highlight_2_title') && data['highlight_2_title']) document.getElementById('highlight_2_title').innerText = data['highlight_2_title'];
-      if (document.getElementById('highlight_2_desc') && data['highlight_2_desc']) document.getElementById('highlight_2_desc').innerText = data['highlight_2_desc'];
-      if (document.getElementById('highlight_3_title') && data['highlight_3_title']) document.getElementById('highlight_3_title').innerText = data['highlight_3_title'];
-      if (document.getElementById('highlight_3_desc') && data['highlight_3_desc']) document.getElementById('highlight_3_desc').innerText = data['highlight_3_desc'];
+      if (document.getElementById('highlight_1_title') && d('highlight_1_title')) document.getElementById('highlight_1_title').innerText = d('highlight_1_title');
+      if (document.getElementById('highlight_1_desc') && d('highlight_1_desc')) document.getElementById('highlight_1_desc').innerText = d('highlight_1_desc');
+      if (document.getElementById('highlight_2_title') && d('highlight_2_title')) document.getElementById('highlight_2_title').innerText = d('highlight_2_title');
+      if (document.getElementById('highlight_2_desc') && d('highlight_2_desc')) document.getElementById('highlight_2_desc').innerText = d('highlight_2_desc');
+      if (document.getElementById('highlight_3_title') && d('highlight_3_title')) document.getElementById('highlight_3_title').innerText = d('highlight_3_title');
+      if (document.getElementById('highlight_3_desc') && d('highlight_3_desc')) document.getElementById('highlight_3_desc').innerText = d('highlight_3_desc');
       
       // होम पेज पर केवल नोटिस बोर्ड का छोटा रेंडर दिखाना
-      renderNoticesBlock(data['notices']);
+      renderNoticesBlock(d('notices'));
     }
     
     // --- ABOUT PAGE (about.html) ---
     else if (currentPage === "about.html") {
       document.title = `About Us | ${schoolName}`;
       
-      if (document.getElementById('principal-name')) document.getElementById('principal-name').innerText = data['principal_name'] || 'Principal';
-      if (document.getElementById('principal-message')) document.getElementById('principal-message').innerText = data['principal_message'] || '';
-      if (data['principal_photo_url'] && document.getElementById('principal-img')) document.getElementById('principal-img').src = data['principal_photo_url'];
+      if (document.getElementById('principal-name')) document.getElementById('principal-name').innerText = d('principal_name') || 'Principal';
+      if (document.getElementById('principal-message')) document.getElementById('principal-message').innerText = d('principal_message') || '';
+      if (d('principal_photo_url') && document.getElementById('principal-img')) document.getElementById('principal-img').src = d('principal_photo_url');
 
-      if (document.getElementById('director-name')) document.getElementById('director-name').innerText = data['director_name'] || 'Director';
-      if (document.getElementById('director-message')) document.getElementById('director-message').innerText = data['director_message'] || '';
-      if (data['director_photo_url'] && document.getElementById('director-img')) document.getElementById('director-img').src = data['director_photo_url'];
+      if (document.getElementById('director-name')) document.getElementById('director-name').innerText = d('director_name') || 'Director';
+      if (document.getElementById('director-message')) document.getElementById('director-message').innerText = d('director_message') || '';
+      if (d('director_photo_url') && document.getElementById('director-img')) document.getElementById('director-img').src = d('director_photo_url');
 
-      if (document.getElementById('admission-rules')) document.getElementById('admission-rules').innerText = data['admission_rules'] || 'Rules pending...';
+      if (document.getElementById('admission-rules')) document.getElementById('admission-rules').innerText = d('admission_rules') || 'Rules pending...';
       
       // Fast Facts Stats
-      if (document.getElementById('stats-total-students') && data['stats_total_students']) document.getElementById('stats-total-students').innerText = data['stats_total_students'];
-      if (document.getElementById('stats-total-teachers') && data['stats_total_teachers']) document.getElementById('stats-total-teachers').innerText = data['stats_total_teachers'];
+      if (document.getElementById('stats-total-students') && d('stats_total_students')) document.getElementById('stats-total-students').innerText = d('stats_total_students');
+      if (document.getElementById('stats-total-teachers') && d('stats_total_teachers')) document.getElementById('stats-total-teachers').innerText = d('stats_total_teachers');
 
       // प्रशंसापत्र (Testimonials) केवल अबाउट पेज पर लोड होंगे
-      renderTestimonialsBlock(data['testimonials']);
+      renderTestimonialsBlock(d('testimonials'));
     }
     
     // --- FACILITIES PAGE (facilities.html) ---
     else if (currentPage === "facilities.html") {
       document.title = `Facilities | ${schoolName}`;
-      renderFacilitiesBlock(data['facilities']);
+      renderFacilitiesBlock(d('facilities'));
     }
     
     // --- GALLERY PAGE (gallery.html) ---
     else if (currentPage === "gallery.html") {
       document.title = `Photo Gallery | ${schoolName}`;
-      renderGalleryBlock(data['gallery']);
+      renderGalleryBlock(d('gallery'));
     }
     
     // --- CONTACT PAGE (contact.html) ---
     else if (currentPage === "contact.html") {
       document.title = `Contact Us | ${schoolName}`;
-      if (document.getElementById('contact-page-address')) document.getElementById('contact-page-address').innerText = data['global_address'] || '';
+      if (document.getElementById('contact-page-address')) document.getElementById('contact-page-address').innerText = d('global_full_address') || d('global_address') || '';
       if (document.getElementById('contact-page-phones')) document.getElementById('contact-page-phones').innerText = phones || '';
-      if (document.getElementById('contact-page-email')) document.getElementById('contact-page-email').innerText = data['global_email'] || '';
+      if (document.getElementById('contact-page-email')) document.getElementById('contact-page-email').innerText = d('global_email') || '';
     }
   } catch (error) {
     console.error("Error patching live stream data:", error);
@@ -278,10 +305,22 @@ function initHeroSlider(data) {
   const bgEl = document.getElementById('hero-bg-img');
   if (!bgEl) return;
   
+  // snake_case ya camelCase dono try karo
+  function getBgImg(snakeKey, camelKey) {
+    const v = data[snakeKey];
+    if (v && v.trim()) return v.trim();
+    const c = data[camelKey];
+    if (c && c.trim()) return c.trim();
+    return null;
+  }
+
   const images = [];
-  if (data['hero_bg_image_1']) images.push(data['hero_bg_image_1']);
-  if (data['hero_bg_image_2']) images.push(data['hero_bg_image_2']);
-  if (data['hero_bg_image_3']) images.push(data['hero_bg_image_3']);
+  const i1 = getBgImg('hero_bg_image_1', 'heroBg');
+  const i2 = getBgImg('hero_bg_image_2', 'heroBg2');
+  const i3 = getBgImg('hero_bg_image_3', 'heroBg3');
+  if (i1) images.push(i1);
+  if (i2) images.push(i2);
+  if (i3) images.push(i3);
   
   if (images.length === 0) return; // leave as CSS default
   
@@ -350,3 +389,48 @@ function applyThemeColors(data) {
   style.innerHTML = cssStr;
   document.head.appendChild(style);
 }
+
+// -------------------------------------------------------------------------
+// MOBILE HAMBURGER MENU — Sabhi pages ke liye shared function
+// -------------------------------------------------------------------------
+
+function initMobileMenu() {
+  const btn = document.getElementById('mobile-menu-btn');
+  const closeBtn = document.getElementById('mobile-menu-close');
+  const overlay = document.getElementById('mobile-nav-overlay');
+  const drawer = document.getElementById('mobile-nav-drawer');
+  
+  if (!btn || !overlay || !drawer) return;
+
+  function openMenu() {
+    overlay.classList.remove('hidden');
+    // Small delay for CSS transition to work
+    requestAnimationFrame(() => {
+      overlay.classList.remove('opacity-0');
+      drawer.classList.remove('-translate-y-full');
+    });
+    document.body.style.overflow = 'hidden'; // scroll lock
+  }
+
+  function closeMenu() {
+    overlay.classList.add('opacity-0');
+    drawer.classList.add('-translate-y-full');
+    document.body.style.overflow = ''; // scroll restore
+    setTimeout(() => {
+      overlay.classList.add('hidden');
+    }, 300);
+  }
+
+  btn.addEventListener('click', openMenu);
+  if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+  
+  // Overlay background click se band ho
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeMenu();
+  });
+
+  // Escape key se band ho
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+}
